@@ -1,0 +1,41 @@
+<%- include('layout/header') %>
+
+<div class="table_responsive">
+  <% if(userinfo != ''){ %>
+  <table>
+    <thead>
+      <tr>
+        <th>Sl</th>
+        <th>Image</th>
+        <th>Name</th>
+        <th>Phone</th>
+        <th>Address</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% userinfo.forEach((ele,index) => {  %>
+          <tr>
+            <td><%= index+1 %></td>
+            <td><img src="<%= ele.photo %>" alt=""></td>
+            <td><%=ele.name %></td>
+            <td><%= ele.phonenumber %></td>
+            <td><%= ele.address %></td>
+            <td>
+              <span class="action_btn">
+                <a href="/edit/<%=ele._id%>">Edit</a>
+                <a href="/remove/<%=ele._id%>">Remove</a>
+              </span>
+            </td>
+          </tr>
+      <% }) %>
+    </tbody>
+  </table>
+  <% }else{ %>
+  <h1>No user found</h1>
+  <% } %>
+
+  <!-- </div> -->
+</div>
+
+<%- include('layout/footer') %>
