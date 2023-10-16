@@ -13,7 +13,7 @@ app.use(express.urlencoded({ extended: false }));
 
 dbconnect();
 app.use(express.static(path.join(__dirname, 'Public')));
-app.use(express.static('uploads'));
+app.use(express.static(path.join(__dirname, 'uploads'))); 
 
 app.set('view engine', 'ejs');
 app.set('views', __dirname + '/views',);
