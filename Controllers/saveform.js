@@ -1,9 +1,12 @@
 const multer = require('multer');
 const usermodel = require('../Models/user');
 
+
+
+
 exports.saveform = async (req, res) => {
     // console.log(req.body);
-    // console.log(req.file.filename);
+    console.log(req.file);
     try {
         const formdata = req.body;
         const user = new usermodel({
@@ -11,7 +14,7 @@ exports.saveform = async (req, res) => {
             email: req.body.email,
             phonenumber: req.body.phone,
             address: req.body.address,
-            photo: req.file.filename,
+            photo: req.file.location,
         });
         await user.save();
         // res.status(200).json({

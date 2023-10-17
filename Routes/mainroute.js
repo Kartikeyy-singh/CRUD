@@ -6,21 +6,28 @@ const userinfo = require('../Controllers/userpage');
 const deleteuser = require('../Controllers/deleteuser');
 const edituser = require('../Controllers/edituser');
 
+const AWS = require('aws-sdk');
+
+require('dotenv').config();
 const multer = require('multer');
+const multerS3 = require('multer-s3');
 
 //?----------------------MULTER PART---------------------------
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, './uploads');
-    },
-    filename: (req, file, cb) => {
-        cb(null, file.fieldname + '_' + Date.now() + '_' + file.originalname);
-    }
+const s3 = new AWS.S3({
+    accessKeyId: process.env.AWSKEY,
+    secretAccessKey: process.env.AWSPASSWORD,
+    region: 'eu-north-1'
 });
-
-const upload = multer({
-    storage: storage,
-}).single('image');
+ const upload = multer({
+    storage: multerS3({
+        s3: s3,
+        bucket: "crudoperationimages",
+        contentType: multerS3.AUTO_CONTENT_TYPE,
+        key: function (req, file, cb) {
+            cb(null, Date.now().toString() + '-' + file.originalname)
+        }
+    })
+})
 //?----------------------------------------------------------
 
 
@@ -38,9 +45,9 @@ router.get('/add', (req, res) => {
 router.get('/remove/:id', deleteuser);
 router.get('/edit/:id',edituser.editpage);
 
-router.post('/add', upload, image.saveform);
+router.post('/add', upload.single('image'), image.saveform);
 
-router.post('/update/:id',upload, edituser.updateuser);
+router.post('/update/:id', upload.single('image'), edituser.updateuser);
 
 //?---------------------------------------------------------
 

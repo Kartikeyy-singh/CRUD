@@ -26,7 +26,7 @@ exports.updateuser = async (req, res) => {
         const { id } = req.params;
         if (req.file) {
             await usermodel.findByIdAndUpdate(id, {
-                photo:req.file.filename,
+                photo:req.file.location,
             });
         }
         await usermodel.findByIdAndUpdate(id, {
